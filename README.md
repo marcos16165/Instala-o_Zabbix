@@ -16,3 +16,5 @@ wget https://repo.zabbix.com/zabbix/4.2/ubuntu/pool/main/z/zabbix-release/zabbix
 dpkg - "Nome do pacote baixado"
 
 ```
+
+## Pacotes necessários para instalação postgresql
