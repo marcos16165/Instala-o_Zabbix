@@ -51,5 +51,29 @@ sudo apt-get install postgresql-11
 
 ``` 
 
+## Criação do banco de dados Zabbix no Postgresql
 
+``` bash
+#Logando com o usuário Postgres
+su -­ postgres
+
+#Acessando o console 
+psql
+
+#Creando base de dado Zabbix
+CREATE DATABASE zabbixdb;
+
+#Criando login Zabbix
+CREATE ROLE zabbix LOGIN;
+
+#Definir senha 
+\password zabbix
+
+#Sair do console Postgres
+\q
+
+#Sair 
+exit
+
+``` 
 
