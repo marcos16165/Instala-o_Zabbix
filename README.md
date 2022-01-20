@@ -30,14 +30,13 @@ curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
 ``` bash
 
+#Descobrir codinome da versão para substituir no arquivo “pgdg.list”
+lsb_release -c
+
 #Para download do postgresql via gerenciador de pacote e adicionar linha
 vim /etc/apt/sources.list.d/pgdg.list
 
-
-``` 
-
-## Descobrir codinome da versão 
-
-``` bash
+#Adicionar linha e sair do arquivo e salvar(Substituir o “bionic” pelo nome da sua versão)
+deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
 
 ``` 
