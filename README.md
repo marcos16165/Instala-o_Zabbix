@@ -39,4 +39,17 @@ vim /etc/apt/sources.list.d/pgdg.list
 #Adicionar linha e sair do arquivo e salvar(Substituir o “bionic” pelo nome da sua versão)
 deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
 
+#Atualizar repositório
+apt update
+
 ``` 
+
+## Instalação postgresql
+``` bash
+
+sudo apt-get install postgresql-11
+
+``` 
+
+
+
