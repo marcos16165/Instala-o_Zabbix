@@ -17,4 +17,27 @@ dpkg - "Nome do pacote baixado"
 
 ```
 
-## Pacotes necessários para instalação postgresql
+## Pacotes necessários para instalação Postgresql 
+``` bash
+
+sudo apt-get install curl ca-certificates
+
+curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+``` 
+
+## Criar arquivo do source.list
+
+``` bash
+
+#Para download do postgresql via gerenciador de pacote e adicionar linha
+vim /etc/apt/sources.list.d/pgdg.list
+
+
+``` 
+
+## Descobrir codinome da versão 
+
+``` bash
+
+``` 
