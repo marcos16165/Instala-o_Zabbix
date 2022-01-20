@@ -1,0 +1,2 @@
+# # INSTALAÇÃO ZABBIX
+##UBUNTU SERVER LTS 18.04.2 - Postgresql
