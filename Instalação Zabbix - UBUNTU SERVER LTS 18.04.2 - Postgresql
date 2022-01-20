@@ -1,0 +1,120 @@
+Download repositório Zabbix
+
+Link do repositório com todas as versões: https://repo.zabbix.com/zabbix/
+
+Versão instalada para os testes: wget https://repo.zabbix.com/zabbix/4.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.2-1%2Bbionic_all.deb
+
+# Instalar o pacote
+dpkg -i ‘nome do arquivo baixado’
+
+# Pacotes necessários para instalação postgresql
+sudo apt-get install curl ca-certificates
+curl https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+# Criar arquivo do source.list para download do postgresql via gerenciador de pacote e adicionar linha
+vim /etc/apt/sources.list.d/pgdg.list
+
+# Como descobrir codinome da versão 
+lsb_release -c
+
+# Adicionar linha e sair do arquivo e salvar
+deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main
+
+# Atualizar repositório
+apt update
+
+# Instalação postgresql
+sudo apt-get install postgresql-11
+
+# Criação do banco de dados Zabbix no postgresql
+su -­ postgres
+psql
+CREATE DATABASE zabbixdb;
+CREATE ROLE zabbix LOGIN;
+\password zabbix
+\q
+exit
+
+# Configurar para permitir usuário zabbix pode conectar no banco de dados zabbixdb
+vim /etc/postgresql/11/main/pg_hba.conf
+
+# Adicionar sua linha aqui
+host zabbixdb zabbix 192.168.99.10/32 md5
+
+local all postgres peer
+
+# Reiniciar Postgresql
+service postgresql restart
+
+# Testar comunicação com o banco de dados usuário zabbix
+su - postgres
+psql -­h localhost ­-U zabbix zabbixdb
+
+\q  //Para sair da console postgresql
+
+# Instalação Zabbix Server
+apt-get install zabbix-server-pgsql
+
+# Popular o banco de dados com as tabelas do Zabbix
+su - postgres
+cd /usr/share/doc/zabbix-server-pgsql/
+zcat create.sql.gz | psql zabbixdb
+psql zabbixdb
+
+# Permissões para usuário zabbix poder acessar suas tabelas
+GRANT SELECT,UPDATE,DELETE,INSERT ON ALL TABLES IN
+SCHEMA public TO zabbix;
+
+vim /etc/zabbix/zabbix_server.conf
+DBHost=localhost
+DBName=zabbixdb
+DBUser=zabbix
+DBPassword=zabbix
+
+
+# Reiniciar zabbix-server
+service zabbix-server restart
+
+#Instalar PHP 7.0
+apt-get install php7.2 php7.2-pgsql php7.2-bcmath php7.2-gd php7.2-mbstring php7.2-xml php7.2-gettext php7.2-ldap
+
+# Backup do arquivo php.ini
+cp /etc/php/7.2/apache2/php.ini /etc/php/7.2/apache2/php.ini.backup
+
+# Alterando parâmetros como o sed do arquivo php.ini, de acordo como recomendado.
+sed -i 's/max_execution_time/\;max_execution_time/g' /etc/php/7.2/apache2/php.ini
+echo 'max_execution_time=300'>> /etc/php/7.2/apache2/php.ini				
+sed -i 's/max_input_time/\;max_input_time/g' /etc/php/7.2/apache2/php.ini
+echo 'max_input_time=300' >> /etc/php/7.2/apache2/php.ini
+sed -i 's/date.timezone/\;date.timezone/g' /etc/php/7.2/apache2/php.ini
+echo 'date.timezone=America/Sao_Paulo' >> /etc/php/7.2/apache2/php.ini
+sed -i 's/post_max_size/\;post_max_size/g' /etc/php/7.2/apache2/php.ini
+echo 'post_max_size=16M' >> /etc/php/7.2/apache2/php.ini
+
+# PHP.ini somente para informação quais os parâmetros foram alterados pelo sed
+memory_limit = 128MB
+post_max_size = 16M
+upload_max_filesize = 2M
+max_execution_time = 300
+max_input_time = 300
+date.timezone = America/Sao_Paulo
+
+# Instalação Frontend
+apt-get install zabbix-frontend-php
+
+# Reiniciar apache
+service apache2 restart
+
+# Ativar Zabbix Server no boot
+systemctl enable zabbix-server
+
+# Iniciando Zabbix Server 
+service zabbix-server restart
+
+# Abrir navegador e acessar Wizard Frontend
+http://IPDOSERVIDOR/zabbix
+
+# Após finalizar as configurações
+User: Admin
+senha: zabbix
+
