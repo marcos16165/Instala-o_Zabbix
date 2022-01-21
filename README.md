@@ -55,7 +55,7 @@ sudo apt-get install postgresql-11
 
 ``` bash
 #Logando com o usuário Postgres
-su -­ postgres
+su - postgres
 
 #Acessando o console 
 psql
@@ -74,6 +74,31 @@ CREATE ROLE zabbix LOGIN;
 
 #Sair 
 exit
+
+``` 
+## Configurando permissões
+
+``` bash
+# Permite que o usuário zabbix possa se conectar ao Zabbix BD
+vim /etc/postgresql/11/main/pg_hba.conf
+
+# Descobrir o IP
+ip as
+
+# Adicionar sua linha aqui (Substituir o IP pelo seu)
+host zabbixdb zabbix 192.168.99.10/32 md5
+
+# Reiniciar Postgresql
+service postgresql restart
+
+#Testar comunicação com o banco de dados usuário zabbix
+su - postgres
+
+#Acessar BD Zabbix
+psql -h localhost -U zabbix zabbixdb
+
+#Sair da console postgresql
+\q  
 
 ``` 
 
