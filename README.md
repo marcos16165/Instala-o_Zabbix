@@ -7,6 +7,9 @@ O presente projeto tem como objetivo, auxiliar na instalação e configurações
 ## Repositório com todas as versões 
 Link: https://repo.zabbix.com/zabbix/
 
+# Descobrir versão do S.O
+cat /etc/lsb-release
+
 ## Versão instalada para os testes 
 ``` bash
 #Download do pacote 
