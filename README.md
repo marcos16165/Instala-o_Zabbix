@@ -20,8 +20,8 @@ cat /etc/lsb-release
 #Download do pacote 
 wget https://repo.zabbix.com/zabbix/4.2/ubuntu/pool/main/z/zabbix-release/zabbix-release_4.2-1%2Bbionic_all.deb
 
-#Instalar o pacote
-dpkg - "Nome do pacote baixado"
+# Instalar o pacote
+dpkg -i “nome do arquivo baixado”
 
 ```
 
@@ -107,6 +107,7 @@ psql -h localhost -U zabbix zabbixdb
 
 #Sair da console postgresql
 \q  
+exit
 
 ``` 
 
