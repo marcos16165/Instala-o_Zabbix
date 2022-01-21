@@ -142,3 +142,38 @@ service zabbix-server restart
 ``` 
 
 ## Instalar PHP 7.0
+
+``` bash
+
+apt-get install php7.2 php7.2-pgsql php7.2-bcmath php7.2-gd php7.2-mbstring php7.2-xml php7.2-gettext php7.2-ldap
+
+# Backup do arquivo php.ini
+cp /etc/php/7.2/apache2/php.ini /etc/php/7.2/apache2/php.ini.backup
+
+# Alterando parâmetros do arquivo (Recomendado pelo Zabbix)
+sed -i 's/max_execution_time/\;max_execution_time/g' /etc/php/7.2/apache2/php.ini
+echo 'max_execution_time=300'>> /etc/php/7.2/apache2/php.ini				
+sed -i 's/max_input_time/\;max_input_time/g' /etc/php/7.2/apache2/php.ini
+echo 'max_input_time=300' >> /etc/php/7.2/apache2/php.ini
+sed -i 's/date.timezone/\;date.timezone/g' /etc/php/7.2/apache2/php.ini
+echo 'date.timezone=America/Sao_Paulo' >> /etc/php/7.2/apache2/php.ini
+sed -i 's/post_max_size/\;post_max_size/g' /etc/php/7.2/apache2/php.ini
+echo 'post_max_size=16M' >> /etc/php/7.2/apache2/php.ini
+
+# Instalação Frontend
+apt-get install zabbix-frontend-php
+
+# Reiniciar apache
+service apache2 restart
+
+# Ativar Zabbix Server no boot
+systemctl enable zabbix-server
+
+# Iniciando Zabbix Server 
+service zabbix-server restart
+
+# Abrir navegador e acessar Wizard Frontend
+http://IPDOSERVIDOR/zabbix
+
+
+``` 
