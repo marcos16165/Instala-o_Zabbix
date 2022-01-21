@@ -102,3 +102,43 @@ psql -h localhost -U zabbix zabbixdb
 
 ``` 
 
+## Instalação Zabbix Server
+
+``` bash
+
+apt-get install zabbix-server-pgsql
+
+# Acessado usuário Postgres 
+su - postgres
+
+# Acessar diretório
+cd /usr/share/doc/zabbix-server-pgsql/
+
+# Criando tabelas
+zcat create.sql.gz | psql zabbixdb
+
+# Logando o BD 
+psql zabbixdb
+
+# Permissões para usuário zabbix poder acessar suas tabelas
+GRANT SELECT,UPDATE,DELETE,INSERT ON ALL TABLES IN SCHEMA public TO zabbix;
+
+# Sair
+\q
+exit 
+
+# Acessar arquivo
+vim /etc/zabbix/zabbix_server.conf
+
+# Adicionar os parâmetros
+DBHost=localhost
+DBName=zabbixdb
+DBUser=zabbix
+DBPassword=zabbix
+
+# Reiniciar zabbix-server
+service zabbix-server restart
+
+``` 
+
+## Instalar PHP 7.0
